@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark position-absolute w-100">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark position-absolute w-100" >
   <div class="container-fluid ms-auto mb-2 mb-lg-0">
     <a class="text-white navbar-brand cursor-pointer" routerLink="game/home">SofkaCardGame</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -14,9 +14,9 @@
             {{ loggedUser }}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li *ngIf="admin">
+            <li *ngIf="admin" routerLink="/game/cards">
               <i class="fa-solid fa-cards-blank"></i>
-              <a class="dropdown-item cursor-pointer" routerLink="game/cards">
+              <a class="dropdown-item " >
                 Gestionar cartas
               </a>
             </li>

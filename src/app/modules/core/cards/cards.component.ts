@@ -13,7 +13,7 @@ export class CardsComponent implements OnInit {
   imageurl    : string = "./../../../../assets/img/marvel cards/";
   buttonText  : String = "Cartas Creadas";
   title       : String = "Escoge la imagen de tu Carta"
-  createCards : boolean = true
+  createCards : boolean = false;
   showModalBox: boolean = false;
 
   constructor( private service: GameService) {

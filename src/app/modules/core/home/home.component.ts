@@ -7,9 +7,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
+  joinSesion : boolean = false;
+  buttonText : string = "Unirse a una partida";
+  waitingUsers :boolean = false;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  changeForm(): void {
+    if(this.joinSesion){
+      this.joinSesion = false;
+      this.buttonText = "Unirse a una partida"
+    } else {
+      this.joinSesion = true;
+      this.buttonText = "Crear Partida"
+    }
+  }
+
+  createGame():void{
+    this.waitingUsers = true;
   }
 
 }

@@ -1,4 +1,62 @@
 <app-header></app-header>
-<div class="container">
+<div class="content">
+    <div class="row row-cols-1 row-cols-md-2 g-4" style="padding: 1%;">
+        <div class="col mt-35" >
+            <div class="card" style="height: 50%;">
+                <img src="./../../../../assets/img/marvel cards/0.jpg" class="card-img-top" alt="...">
+            </div>
+        </div>
+        <div class="col mt-35" style="width: 49%;">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-bottom: 5px;" *ngIf="!waitingUsers">  
+                <button class="btn btn-primary btn-lg" type="button" (click)="changeForm()">
+                    {{ buttonText }}
+                </button>
+            </div>
 
+
+            
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Crear Juego</h5>
+                    <div *ngIf="waitingUsers">
+                        <div class="d-flex align-items-center" >
+                            <strong>Esperando Jugadores...</strong>
+                            <div class="spinner-border ms-auto text-danger" role="status" aria-hidden="true"></div>
+                        </div>
+                        <div class="card" style="height: 12vh; margin-top: 5%;">
+                            <div class="row g-0">
+                                <div class="col-md-4" style="height: 39%; text-align: center; ">
+                                    <img src="./../../../../assets/img/avatar.jpg" class="img-fluid rounded-start" alt="..." style="height: 100%;">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Juanchu</h5>
+                                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a class="btn btn-primary mt-35">Iniciar Juego</a>
+                    </div>
+                    
+                    <!--Form-->
+                    <div *ngIf="!waitingUsers">
+                        <div class="mb-3">
+                            <label for="power" class="form-label">Ingresa el Id del juego</label>
+                            <input type="text" class="form-control" id="id" placeholder="juegoId" name="id" required>
+                        </div>
+                        <div class="mb-3" *ngIf="!joinSesion">
+                            <label for="power" class="form-label">Numero de cartas por jugador</label>
+                            <input type="text" class="form-control" id="id" placeholder="4" name="id" required>
+                        </div>
+                        <a class="btn btn-primary" *ngIf="!joinSesion" (click)="createGame()" >Crear Juego</a>
+                        <a class="btn btn-primary" *ngIf="joinSesion" >Unirse al Juego</a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
 </div>
+
