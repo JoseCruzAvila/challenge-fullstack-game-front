@@ -1,0 +1,23 @@
+<app-header></app-header>
+<div class="container">
+    <!--<div class="btn-cotainer">
+        <button type="button" class="btn btn-primary btn-lg">Crear Carta</button>
+        <button type="button" class="btn btn-primary btn-lg">Cartas Creadas</button>
+    </div>-->
+    <h2 style="text-align: center;">{{title}}</h2>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-bottom: 5px;">
+        <button class="btn btn-primary btn-lg" type="button" (click)="changeView()">
+            {{buttonText}}
+        </button>
+    </div>
+    <div class="row row-cols-1 row-cols-md-6 g-4">
+        <div class="col marvel-card"  *ngFor="let card of cards">
+          <div class="card h-100">
+            <img src="{{imageurl}}{{card}}.jpg" class="card-img-top" alt="...">
+            <!--<div class="card-footer">
+              <small class="text-muted">Last updated 3 mins ago</small>
+            </div>-->
+          </div>
+        </div>   
+    </div>
+</div>
