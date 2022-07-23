@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: 'game', 
-    loadChildren: () => import('./modules/landing/landing.module').then(m => m.LandingModule)
+    loadChildren: () => import('./modules/core/core.module').then(m => m.CoreModule)
   },
   {
     path: '**', 
