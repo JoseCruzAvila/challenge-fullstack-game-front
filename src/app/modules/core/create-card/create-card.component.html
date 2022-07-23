@@ -1,0 +1,37 @@
+<div class="modal fade" *ngIf="showModalBox" id="cardModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <form id="create-game-card" [formGroup]="cardForm" (ngSubmit)="createCard()">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Completa tu carta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body row row-cols-1 row-cols-md-2 g-4">
+                <div class="col">
+                    <div class="card">
+                        <img src="./../../../../assets/img/marvel cards/20.jpg" class="card-img-top" alt="...">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="power" class="form-label">Poder</label>
+                                <input type="text" class="form-control" id="power" placeholder="44" name="power" formControlName="power" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Descripcion de la carta</label>
+                                <textarea class="form-control" id="description" rows="3" name="description" formControlName="description" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
