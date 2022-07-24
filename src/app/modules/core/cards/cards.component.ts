@@ -13,8 +13,10 @@ export class CardsComponent implements OnInit {
   imageurl    : string = "./../../../../assets/img/marvel cards/";
   buttonText  : String = "Cartas Creadas";
   title       : String = "Escoge la imagen de tu Carta"
-  createCards : boolean = false;
-  showModalBox: boolean = false;
+  createCards : boolean = true;
+  imageUrlComplete: string = '';
+  displayStyle: string = "none";
+  modalTitle: string = "Completa tu carta";
 
   constructor( private service: GameService) {
     this.getCardsCreated();
@@ -46,12 +48,6 @@ export class CardsComponent implements OnInit {
     });
   }
 
-  modalOpen(): void {
-    console.log('sisas');
-    
-    this.showModalBox = !this.showModalBox ? true : false;
-  }
-
   getCardsCreated() : void{
     this.service.getCards().subscribe({
       next: (res) => {
@@ -68,5 +64,17 @@ export class CardsComponent implements OnInit {
       }
     })
   }
+
+  
+  openPopup(card:number, num:number) {   
+    this.modalTitle = num ===2 ? 'Edita tu tarjeta' : 'Completa tu carta'; 
+    this.imageUrlComplete = card.toString();
+    this.displayStyle = "block";
+  }
+
+  closePopup(event : any):void {
+    this.displayStyle = event.display;
+  }
+
 
 }

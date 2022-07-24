@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GameService } from 'src/app/shared/services/game.service';
 
@@ -10,12 +10,19 @@ import { GameService } from 'src/app/shared/services/game.service';
 export class CreateCardComponent implements OnInit {
 
   @Input()
-  showModalBox: boolean = false;
+  displayStyle: string = 'none';
 
   @Input()
   image: string = '';
 
-  cardForm!: FormGroup;
+  @Input()
+  title: string = '';
+
+  @Output() modalStatus = new EventEmitter<any>();
+  display !: string;
+
+  imageurl  : string = "./../../../../assets/img/marvel cards/";
+  cardForm! : FormGroup;
   constructor(private service: GameService, private formGroup: FormBuilder,) {
     this.cardForm = this.formGroup.group({
       poder: new FormControl(0, [Validators.required]),
@@ -23,7 +30,7 @@ export class CreateCardComponent implements OnInit {
     });
    }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
   }
 
   createCard() : void {
@@ -33,6 +40,8 @@ export class CreateCardComponent implements OnInit {
         description : this.cardForm.get("descripcion")?.value
       }
 
+      console.log(card);
+      
       this.service.createCard(card).subscribe({
         next: (res) => {
           console.log(res);
@@ -41,6 +50,11 @@ export class CreateCardComponent implements OnInit {
           console.error(error);
         }
       })
+  }
+
+  
+  closePopup():void {
+    this.modalStatus.emit({display : "none"});
   }
 
 }
