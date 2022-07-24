@@ -11,8 +11,8 @@ export class CardsComponent implements OnInit {
   cardsToCreate : Array<number> = [];
   cards       : Array<any> = [];
   imageurl    : string = "./../../../../assets/img/marvel cards/";
-  buttonText  : String = "Cartas Creadas";
-  title       : String = "Escoge la imagen de tu Carta"
+  buttonText  : String = "";
+  title       : String = ""
   createCards : boolean = true;
   imageUrlComplete: string = '';
   displayStyle: string = "none";
@@ -20,6 +20,7 @@ export class CardsComponent implements OnInit {
 
   constructor( private service: GameService) {
     this.getCardsCreated();
+    this.changeView();
    }
 
   ngOnInit(): void {

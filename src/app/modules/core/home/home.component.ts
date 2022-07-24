@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ export class HomeComponent implements OnInit {
   buttonText : string = "Unirse a una partida";
   waitingUsers :boolean = false;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -28,6 +29,10 @@ export class HomeComponent implements OnInit {
 
   createGame():void{
     this.waitingUsers = true;
+  }
+
+  initGame():void {
+    this.router.navigate(['game/fight']);
   }
 
 }

@@ -6,12 +6,15 @@ import { LandingModule } from "./../landing/landing.module";
 import { CardsComponent } from './cards/cards.component';
 import { CreateCardComponent } from './create-card/create-card.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { GameComponent } from './game/game.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     HomeComponent,
     CardsComponent,
-    CreateCardComponent
+    CreateCardComponent,
+    GameComponent
   ],
   imports: [
     CommonModule,
@@ -19,6 +22,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     LandingModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule
   ]
 })
 export class CoreModule { }
