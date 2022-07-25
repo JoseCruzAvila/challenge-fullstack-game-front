@@ -35,4 +35,8 @@ export class HeaderComponent implements OnInit {
     return this.authService.isLoggedIn;
   }
 
+  openProfileInfo(): void {
+    
+  }
+
 }

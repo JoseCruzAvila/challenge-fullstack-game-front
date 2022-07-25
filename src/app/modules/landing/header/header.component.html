@@ -16,6 +16,12 @@
             {{ loggedUser }}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li (click)="openProfileInfo()">
+              <i class="fa-solid fa-cards-blank"></i>
+              <a class="dropdown-item " >
+                Perfil
+              </a>
+            </li>
             <li *ngIf="admin" routerLink="/game/cards">
               <i class="fa-solid fa-cards-blank"></i>
               <a class="dropdown-item " >
