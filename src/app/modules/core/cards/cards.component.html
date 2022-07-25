@@ -13,7 +13,7 @@
     <div class="row row-cols-1 row-cols-md-6 g-4" *ngIf="createCards">
         <div class="col marvel-card"  *ngFor="let card of cardsToCreate">
           <div class="card h-100" (click)="openPopup(card,1)">
-            <img src="{{imageurl}}{{card}}.jpg" class="card-img-top" alt="...">
+            <img src="./../../../../assets/img/marvel-cards/{{card}}.jpg" class="card-img-top" alt="...">
             <!--<div class="card-footer">
               <small class="text-muted">Last updated 3 mins ago</small>
             </div>-->
@@ -24,7 +24,7 @@
     <div class="row row-cols-1 row-cols-md-6 g-4" *ngIf="!createCards">
         <div class="col marvel-card"  *ngFor="let card of cards">
           <div class="card h-100" (click)="openPopup(card.image,2)">
-            <img src="{{imageurl}}{{card.image}}.jpg" class="card-img-top" alt="...">
+            <img src="./../../../../assets/img/marvel-cards/{{card.image}}.jpg" class="card-img-top" alt="...">
             <div class="card-footer h-100">
               <small class="text-muted">Poder: {{ card.power }}</small> <br>
               <small class="text-muted">Descripcion: {{ card.description }}</small>

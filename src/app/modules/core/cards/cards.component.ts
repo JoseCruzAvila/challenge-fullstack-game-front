@@ -10,7 +10,6 @@ export class CardsComponent implements OnInit {
 
   cardsToCreate : Array<number> = [];
   cards       : Array<any> = [];
-  imageurl    : string = "./../../../../assets/img/marvel-cards/";
   buttonText  : String = "";
   title       : String = ""
   createCards : boolean = true;
