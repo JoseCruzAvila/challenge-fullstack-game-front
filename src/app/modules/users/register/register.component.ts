@@ -17,4 +17,8 @@ export class RegisterComponent implements OnInit {
     this.authService.isLoggedIn ? this.router.navigate(['game/home']): "";
   }
 
+  signUp(email: string, password: string) {
+    this.authService.SignUp(email, password);
+  }
+
 }
