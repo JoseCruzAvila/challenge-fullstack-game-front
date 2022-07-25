@@ -1,13 +1,21 @@
 <app-header></app-header>
 <div class="content">
     <div class="row row-cols-1 row-cols-md-2 g-4" style="padding: 1%;">
-        <div class="col mt-35" >
-            <div class="card" style="height: 50%;">
-                <img src="./../../../../assets/img/marvel cards/0.jpg" class="card-img-top" alt="...">
+        <div class="col mt-35">
+            <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="./../../../../assets/img/card-back/0.jpg" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item" *ngFor="let card of cards">
+                        <img src="./../../../../assets/img/card-back/{{card}}.jpg" class="d-block w-100" alt="...">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col mt-35" style="width: 49%;">
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-bottom: 5px;" *ngIf="!waitingUsers">  
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-bottom: 5px;"
+                *ngIf="!waitingUsers">
                 <button class="btn btn-primary btn-lg" type="button" (click)="changeForm()">
                     {{ buttonText }}
                 </button>
@@ -17,26 +25,28 @@
                 <div class="card-body">
                     <h5 class="card-title text-center">Crear Juego</h5>
                     <div *ngIf="waitingUsers">
-                        <div class="d-flex align-items-center" >
+                        <div class="d-flex align-items-center">
                             <strong>Esperando Jugadores...</strong>
                             <div class="spinner-border ms-auto text-danger" role="status" aria-hidden="true"></div>
                         </div>
                         <div class="card" style="height: 12vh; margin-top: 5%;">
                             <div class="row g-0">
                                 <div class="col-md-4" style="height: 39%; text-align: center;">
-                                    <img src="./../../../../assets/img/avatar.jpg" class="img-fluid rounded-start" alt="..." style="height: 100%;">
+                                    <img src="./../../../../assets/img/avatar.jpg" class="img-fluid rounded-start"
+                                        alt="..." style="height: 100%;">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
                                         <h5 class="card-title">Juanchu</h5>
-                                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
-                        </div>                       
+                        </div>
                     </div>
                     <a *ngIf="waitingUsers" class="btn btn-primary mt-35" (click)="initGame()">Iniciar Juego</a>
-                    
+
                     <!--Form-->
                     <div *ngIf="!waitingUsers">
                         <div class="mb-3">
@@ -47,8 +57,8 @@
                             <label for="power" class="form-label">Numero de cartas por jugador</label>
                             <input type="text" class="form-control" id="id" placeholder="4" name="id" required>
                         </div>
-                        <a class="btn btn-primary" *ngIf="!joinSesion" (click)="createGame()" >Crear Juego</a>
-                        <a class="btn btn-primary" *ngIf="joinSesion" >Unirse al Juego</a>
+                        <a class="btn btn-primary" *ngIf="!joinSesion" (click)="createGame()">Crear Juego</a>
+                        <a class="btn btn-primary" *ngIf="joinSesion">Unirse al Juego</a>
                     </div>
                 </div>
             </div>
@@ -60,38 +70,37 @@
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}">
     <div class="modal-dialog" role="document">
         <!--<form id="create-game-card" [formGroup]="cardForm" (ngSubmit)="createCard()">-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Perfil</h5>
-                </div>
-                <div class="modal-body row row-cols-1 row-cols-md-2 g-4">
-                    <!--<div class="col">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Perfil</h5>
+            </div>
+            <div class="modal-body row row-cols-1 row-cols-md-2 g-4">
+                <!--<div class="col">
                         <div class="card">
                             <img src="{{ imageurl }}{{image}}.jpg" class="card-img-top" alt="...">
                         </div>
                     </div>-->
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="mb-3">
-                                    <label for="power" class="form-label">Poder</label>
-                                    <input type="text" class="form-control" id="power" placeholder="44" name="power"
-                                        formControlName="poder" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="description" class="form-label">Descripcion de la carta</label>
-                                    <textarea class="form-control" id="description" rows="3" name="description"
-                                        formControlName="descripcion" required></textarea>
-                                </div>
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="power" class="form-label">Poder</label>
+                                <input type="text" class="form-control" id="power" placeholder="44" name="power"
+                                    formControlName="poder" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Descripcion de la carta</label>
+                                <textarea class="form-control" id="description" rows="3" name="description"
+                                    formControlName="descripcion" required></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" (click)="closePopup()">Close</button>
-                </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" (click)="closePopup()">Close</button>
+            </div>
+        </div>
         <!--</form>-->
     </div>
 </div>
-

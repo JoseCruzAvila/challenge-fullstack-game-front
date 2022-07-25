@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
+  cards : Array<number> = [];
+  imageurl    : string = "./../../../../assets/img/card-back/";
   joinSesion : boolean = false;
   buttonText : string = "Unirse a una partida";
   waitingUsers :boolean = false;
@@ -15,6 +17,7 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    this.cards = Array.from(Array(11).keys());  
   }
 
   changeForm(): void {

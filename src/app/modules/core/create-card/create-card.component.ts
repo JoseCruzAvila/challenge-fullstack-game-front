@@ -21,7 +21,7 @@ export class CreateCardComponent implements OnInit {
   @Output() modalStatus = new EventEmitter<any>();
   display !: string;
 
-  imageurl  : string = "./../../../../assets/img/marvel cards/";
+  imageurl  : string = "./../../../../assets/img/marvel-cards/";
   cardForm! : FormGroup;
   constructor(private service: GameService, private formGroup: FormBuilder,) {
     this.cardForm = this.formGroup.group({
