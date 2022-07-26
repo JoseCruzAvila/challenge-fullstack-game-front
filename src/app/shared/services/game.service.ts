@@ -18,7 +18,7 @@ export class GameService {
   public messages!: Subject<any>;
 
   constructor(private http: HttpClient) {
-    this.url = 'http://localhost:8080/api/';
+    this.url = `${environment.gameUrls.card}api/`;
   }
 
   createCard(data : Card): Observable<any> {

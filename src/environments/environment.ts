@@ -12,7 +12,13 @@ export const environment = {
     appId: "1:760380725265:web:e325378594f0bb6277f9b0",
     measurementId: "G-RE53K553EY"
   },
-  production: false
+  production: false,
+  gameUrls: {
+    websocket: "ws://localhost:8888/retrieve/",
+    game: "http://localhost:8080/",
+    player: "http://localhost:7777/",
+    card: "http://localhost:7070/"
+  }
 };
 
 /*
