@@ -4,6 +4,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat
 import { Router } from '@angular/router';
 import * as auth from 'firebase/auth';
 import { User } from '../models/user';
+import { CookieService } from "ngx-cookie-service";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class AuthenticationService {
   constructor(
     public store: AngularFirestore,
     public authentication: AngularFireAuth,
-    public router: Router
+    public router: Router,
+    private cookieService : CookieService
   ) {
     this.authentication.authState.subscribe((user) => {
       if (user) {
@@ -34,9 +36,11 @@ export class AuthenticationService {
     return this.authentication
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        console.log("ingresó")
         this.router.navigate(['game/home']);
-        this.SetUserData(result.user);
+        //this.SetUserData(result.user);
+        console.log(JSON.stringify(result.user));
+        localStorage.setItem('user', JSON.stringify(result.user));
+        this.cookieService.set('user', JSON.stringify(result.user));
       })
       .catch((error) => {
         window.alert(error.message);
@@ -89,8 +93,6 @@ export class AuthenticationService {
   GoogleAuth() {
     return this.AuthLogin(new auth.GoogleAuthProvider()).then((result: any) => {
       if (result) {
-        console.log("ingreso con cuenta");
-        localStorage.setItem('user', JSON.stringify(result.user));
         this.SetUserData(result.user);
         this.router.navigate(['game/home']);
       }
@@ -100,9 +102,7 @@ export class AuthenticationService {
   AuthLogin(provider: any) {
     return this.authentication
       .signInWithPopup(provider)
-      .then((result) => {
-        console.log("ingreso con cuenta");
-        localStorage.setItem('user', JSON.stringify(result.user));
+      .then((result) => {        
         this.router.navigate(['game/home']);
         this.SetUserData(result.user);
       })
@@ -113,16 +113,20 @@ export class AuthenticationService {
 
 
   SetUserData(user: any) {
-    const userRef: AngularFirestoreDocument<any> = this.store.doc(
-      `users/${user.uid}`
-    );
+    const userRef: AngularFirestoreDocument<any> = this.store.doc(`users/${user.uid}`);
     const userData: User = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
+      admin: true
     };
+    
+    console.log(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
+    
+    this.cookieService.set('user', JSON.stringify(userData));
     return userRef.set(userData, {
       merge: true,
     });
@@ -132,6 +136,7 @@ export class AuthenticationService {
   SignOut() {
     return this.authentication.signOut().then(() => {
       localStorage.removeItem('user');
+      this.cookieService.delete('user');
       this.router.navigate(['login']);
     });
   }
