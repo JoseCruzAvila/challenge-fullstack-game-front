@@ -21,13 +21,22 @@ export class GameService {
     this.url = 'http://localhost:8080/api/';
   }
 
-  createCard(data: any): Observable<any> {
+  createCard(data : Card): Observable<any> {
     return this.http.post(`${this.url}card/create`, data, { responseType: 'text' });
   }
 
   getCards(): Observable<any> {
     return this.http.get(`${this.url}card`);
   }
+
+  updateCard(data : Card){
+    return this.http.post(`${this.url}card/create`, data, { responseType: 'text' });
+  }
 }
 
-
+interface Card {
+  id ?: string,
+  image : string,
+  power : number,
+  description : string
+}

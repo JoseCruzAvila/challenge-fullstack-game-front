@@ -18,16 +18,31 @@ export class CreateCardComponent implements OnInit {
   @Input()
   title: string = '';
 
+  @Input()
+  info: any;
+
   @Output() modalStatus = new EventEmitter<any>();
   display !: string;
   
+  poder : string = '';
+  descripcion : string = '';
   cardForm! : FormGroup;
   constructor(private service: GameService, private formGroup: FormBuilder,) {
+    
     this.cardForm = this.formGroup.group({
-      poder: new FormControl(0, [Validators.required]),
-      descripcion: new FormControl("", [Validators.required]),
+      poder: new FormControl('', [Validators.required]),
+      descripcion: new FormControl('', [Validators.required]),
     });
+       
    }
+
+  ngOnChanges(){
+    this.poder = this.info != null ? this.info.power : '0';
+    this.descripcion = this.info != null ? this.info.description : '';
+
+    this.cardForm.get('poder')?.setValue('');
+    this.cardForm.get('descripcion')?.setValue('');
+  }
 
   ngOnInit(): void {    
   }
@@ -51,6 +66,28 @@ export class CreateCardComponent implements OnInit {
       })
   }
 
+
+  updateCard(): void {
+    let card : Card = {
+      id : this.info.id,
+      image : this.image,
+      power : this.cardForm.get("poder")?.value,
+      description : this.cardForm.get("descripcion")?.value
+    }
+
+    console.log(card);
+
+    this.service.updateCard(card).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    })
+    
+  }
+
   
   closePopup():void {
     this.modalStatus.emit({display : "none"});
@@ -60,6 +97,7 @@ export class CreateCardComponent implements OnInit {
 
 
 interface Card {
+  id ?: string,
   image : string,
   power : number,
   description : string

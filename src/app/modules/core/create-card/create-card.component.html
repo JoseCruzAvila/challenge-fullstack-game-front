@@ -16,12 +16,12 @@
                             <div class="card-body">
                                 <div class="mb-3">
                                     <label for="power" class="form-label">Poder</label>
-                                    <input type="text" class="form-control" id="power" placeholder="44" name="power"
+                                    <input type="text" class="form-control" id="power" placeholder="{{poder}}" name="power"
                                         formControlName="poder" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Descripcion de la carta</label>
-                                    <textarea class="form-control" id="description" rows="3" name="description"
+                                    <textarea class="form-control" id="description" rows="3" name="description" placeholder="{{descripcion}}"
                                         formControlName="descripcion" required></textarea>
                                 </div>
                             </div>
@@ -30,7 +30,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" (click)="closePopup()">Close</button>
-                    <button type="button" class="btn btn-primary" (click)="createCard()">Guardar</button>
+                    <button type="button" *ngIf="info == null" class="btn btn-primary" (click)="createCard()">Guardar</button>
+                    <button type="button" *ngIf="info != null" class="btn btn-primary" (click)="updateCard()">Actualizar</button>
                 </div>
             </div>
         </form>

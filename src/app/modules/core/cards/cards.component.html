@@ -23,7 +23,7 @@
 
     <div class="row row-cols-1 row-cols-md-6 g-4" *ngIf="!createCards">
         <div class="col marvel-card"  *ngFor="let card of cards">
-          <div class="card h-100" (click)="openPopup(card.image,2)">
+          <div class="card h-100" (click)="openPopup(card,2)">
             <img src="./../../../../assets/img/marvel-cards/{{card.image}}.jpg" class="card-img-top" alt="...">
             <div class="card-footer h-100">
               <small class="text-muted">Poder: {{ card.power }}</small> <br>
@@ -33,5 +33,5 @@
         </div>   
     </div>
 
-    <app-create-card [title]="modalTitle" [displayStyle]="displayStyle" [image]="imageUrlComplete" (modalStatus)="closePopup($event)"></app-create-card>
+    <app-create-card [title]="modalTitle" [displayStyle]="displayStyle" [image]="imageUrlComplete" [info]="info" (modalStatus)="closePopup($event)"></app-create-card>
 </div>  

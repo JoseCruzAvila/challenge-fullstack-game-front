@@ -16,6 +16,7 @@ export class CardsComponent implements OnInit {
   imageUrlComplete: string = '';
   displayStyle: string = "none";
   modalTitle: string = "Completa tu carta";
+  info : any;
 
   constructor( private service: GameService) {
     this.getCardsCreated();
@@ -64,17 +65,24 @@ export class CardsComponent implements OnInit {
       }
     })
   }
-
   
-  openPopup(card:number, num:number) {   
-    this.modalTitle = num ===2 ? 'Edita tu tarjeta' : 'Completa tu carta'; 
+  openPopup(card:any, num:number) {   
+    this.modalTitle = 'Completa tu carta'; 
     this.imageUrlComplete = card.toString();
+    this.info = null;
+    console.log(card);
+    
+    if (num === 2) {
+      this.modalTitle = 'Edita tu tarjeta';
+      this.imageUrlComplete = card.image.toString();
+      this.info = card;      
+    }
+    
     this.displayStyle = "block";
   }
 
   closePopup(event : any):void {
     this.displayStyle = event.display;
   }
-
 
 }
