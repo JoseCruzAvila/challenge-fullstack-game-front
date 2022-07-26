@@ -1,4 +1,76 @@
 <app-header></app-header>
-<div class="container-game" style="border: 1pxsolid black;">
+<div class="container">
+    <div class="content" style="margin-top: 7.8vh;">
 
+        <!--Deck 1-->
+        <div class="deck-h deck1">
+            <div class="row row-cols-1 row-cols-md-6 g-4">
+                <div class="col marvel-card"  *ngFor="let card of cards1">
+                  <div class="card h-100">
+                    <img src="./../../../../assets/img/marvel-cards/{{card}}.jpg" class="card-img-top" alt="...">
+                    <div class="card-footer h-100">
+                        <small class="text-muted" style="font-size: 13px;">Poder: 80</small> <br>
+                      </div>
+                  </div>
+                </div>   
+            </div>
+        </div>
+
+        <!--Deck 2-->
+        <div class="deck-h deck2">
+            <div class="row row-cols-1 row-cols-md-6 g-4" style="height: 100%;">
+                <div class="col"  *ngFor="let card of cards1" style="height: 85%;">
+                  <div class="card h-100" >
+                    <img src="./../../../../assets/img/back/card-back.jpg" class="card-img-top" alt="..." style="height: 100%;">
+                  </div>
+                </div>   
+            </div>
+        </div>
+
+        <!--Deck 3-->
+        <div class="deck-v deck3">
+            <div class="col" *ngFor="let card of cards1"  style="height:auto;padding-bottom: 3px;">
+                <div class="card h-25" style="width: 7vw; justify-content: left;">
+                    <img src="./../../../../assets/img/back/back-i.jpg" class="card-img-top" alt="..."
+                            style="height: 6vh;">
+                </div>
+            </div>
+        </div>
+
+        <!--Deck 4-->
+        <div class="deck-v deck4">
+            <div class="col" *ngFor="let card of cards1"  style="height:auto;padding-bottom: 3px;">
+                <div class="card h-25" style="width: 7vw; justify-content: left;">
+                    <img src="./../../../../assets/img/back/back-i2.jpg" class="card-img-top" alt="..."
+                            style="height: 6vh;">
+                </div>
+            </div>
+        </div>
+
+        <!--Deck 5-->
+        <div class="deck-v deck5">
+            <div class="col" *ngFor="let card of cards1"  style="height:auto;padding-bottom: 3px;">
+                <div class="card h-25" style="width: 7vw; justify-content: left;">
+                    <img src="./../../../../assets/img/back/back-d.jpg" class="card-img-top" alt="..."
+                            style="height: 6vh;">
+                </div>
+            </div>
+        </div>
+
+         <!--Deck 3-->
+         <div class="deck-v deck6">
+            <div class="col" *ngFor="let card of cards1"  style="height:auto;padding-bottom: 3px;">
+                <div class="card h-25" style="width: 7vw; justify-content: left;">
+                    <img src="./../../../../assets/img/back/back-d2.jpg" class="card-img-top" alt="..."
+                            style="height: 6vh;">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!--
+ 
+    <div class="row row-cols-md-1"  style="height: 100%; border: 1px solid;">
+            </div>
+-->

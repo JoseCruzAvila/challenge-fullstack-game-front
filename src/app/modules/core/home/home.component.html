@@ -49,16 +49,18 @@
 
                     <!--Form-->
                     <div *ngIf="!waitingUsers">
-                        <div class="mb-3">
-                            <label for="power" class="form-label">Ingresa el Id del juego</label>
-                            <input type="text" class="form-control" id="id" placeholder="juegoId" name="id" required>
-                        </div>
-                        <div class="mb-3" *ngIf="!joinSesion">
-                            <label for="power" class="form-label">Numero de cartas por jugador</label>
-                            <input type="text" class="form-control" id="id" placeholder="4" name="id" required>
-                        </div>
-                        <a class="btn btn-primary" *ngIf="!joinSesion" (click)="createGame()">Crear Juego</a>
-                        <a class="btn btn-primary" *ngIf="joinSesion">Unirse al Juego</a>
+                        <form id="create-game-card" [formGroup]="createGameForm" (ngSubmit)="createGame()">
+                            <div class="mb-3">
+                                <label for="power" class="form-label">Ingresa el Id del juego</label>
+                                <input type="text" class="form-control" id="id" placeholder="#32" name="id" required formControlName="gameId">
+                            </div>
+                            <div class="mb-3" *ngIf="!joinSesion">
+                                <label for="power" class="form-label">Numero de jugadores</label>
+                                <input type="text" class="form-control" id="id" placeholder="2" name="id" required formControlName="playerNumber">
+                            </div>
+                            <a class="btn btn-primary" *ngIf="!joinSesion" (click)="createGame()">Crear Juego</a>
+                            <a class="btn btn-primary" *ngIf="joinSesion" (click)="joinGame()">Unirse al Juego</a>
+                        </form>
                     </div>
                 </div>
             </div>

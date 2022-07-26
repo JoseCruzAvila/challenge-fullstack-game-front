@@ -30,7 +30,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" (click)="closePopup()">Close</button>
-                    <button type="button" *ngIf="info == null" class="btn btn-primary" (click)="createCard()">Guardar</button>
+                    <button type="submit" *ngIf="info == null" class="btn btn-primary">Guardar</button>
                     <button type="button" *ngIf="info != null" class="btn btn-primary" (click)="updateCard()">Actualizar</button>
                 </div>
             </div>

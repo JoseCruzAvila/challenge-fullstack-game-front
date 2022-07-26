@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,7 +15,15 @@ export class HomeComponent implements OnInit {
   buttonText : string = "Unirse a una partida";
   waitingUsers :boolean = false;
   displayStyle: string = "none";
-  constructor(private router: Router) { }
+
+  createGameForm :  FormGroup;
+  constructor(private router: Router,  private formGroup: FormBuilder,) { 
+
+    this.createGameForm = this.formGroup.group({
+      gameId: new FormControl('', [Validators.required]),
+      playerNumber : new FormControl('', [Validators.required])
+    })
+  }
 
   ngOnInit(): void {
     this.cards = Array.from(Array(11).keys());  
@@ -32,6 +41,10 @@ export class HomeComponent implements OnInit {
 
   createGame():void{
     this.waitingUsers = true;
+  }
+
+  joinGame(){
+    this.router.navigate(['game/fight']);
   }
 
   initGame():void {
