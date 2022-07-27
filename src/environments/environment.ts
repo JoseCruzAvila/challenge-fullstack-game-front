@@ -17,7 +17,7 @@ export const environment = {
     websocket: "ws://localhost:8888/retrieve/",
     game: "http://localhost:8080/",
     player: "http://localhost:7777/",
-    card: "http://localhost:7070/"
+    card: "http://localhost:7072/"
   }
 };
 

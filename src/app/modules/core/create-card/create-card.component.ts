@@ -53,12 +53,10 @@ export class CreateCardComponent implements OnInit {
         power : this.cardForm.get("poder")?.value,
         description : this.cardForm.get("descripcion")?.value
       }
-
-      console.log(card);
       
       this.service.createCard(card).subscribe({
         next: (res) => {
-          console.log(res);
+          this.closePopup();
         },
         error: (error) => {
           console.error(error);
@@ -71,15 +69,13 @@ export class CreateCardComponent implements OnInit {
     let card : Card = {
       id : this.info.id,
       image : this.image,
-      power : this.cardForm.get("poder")?.value,
-      description : this.cardForm.get("descripcion")?.value
+      power : this.cardForm.get("poder")?.value != '' ? this.cardForm.get("poder")?.value : this.poder,
+      description : this.cardForm.get("descripcion")?.value != '' ? this.cardForm.get("descripcion")?.value : this.descripcion
     }
-
-    console.log(card);
 
     this.service.updateCard(card).subscribe({
       next: (res) => {
-        console.log(res);
+        this.closePopup();
       },
       error: (error) => {
         console.error(error);

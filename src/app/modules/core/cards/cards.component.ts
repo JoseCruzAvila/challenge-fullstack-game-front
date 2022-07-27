@@ -70,7 +70,6 @@ export class CardsComponent implements OnInit {
     this.modalTitle = 'Completa tu carta'; 
     this.imageUrlComplete = card.toString();
     this.info = null;
-    console.log(card);
     
     if (num === 2) {
       this.modalTitle = 'Edita tu tarjeta';
@@ -83,6 +82,7 @@ export class CardsComponent implements OnInit {
 
   closePopup(event : any):void {
     this.displayStyle = event.display;
+    this.getCardsCreated();
   }
 
 }
