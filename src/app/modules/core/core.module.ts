@@ -8,6 +8,7 @@ import { CreateCardComponent } from './create-card/create-card.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GameComponent } from './game/game.component';
 import { RouterModule } from '@angular/router';
+import { DragDropModule } from "@angular/cdk/drag-drop";
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { RouterModule } from '@angular/router';
     LandingModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    DragDropModule
   ]
 })
 export class CoreModule { }

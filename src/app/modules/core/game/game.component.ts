@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import { CdkDragDrop } from "@angular/cdk/drag-drop";
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GameComponent implements OnInit {
 
+  //cards1 : Observable<number[]> = [];
   cards1 : Array<number> = [];
   cards2 : Array<number> = [];
   constructor() { 
@@ -15,6 +17,12 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  drop(event: CdkDragDrop<number[]>):void{
+    //transfer
+    console.log(event);
+    
   }
 
 }
