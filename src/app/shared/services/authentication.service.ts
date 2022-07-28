@@ -13,6 +13,7 @@ export class AuthenticationService {
 
   #loggedUserSubject: BehaviorSubject<User> = new BehaviorSubject({} as User);
   public readonly loggedUser: Observable<User> = this.#loggedUserSubject.asObservable();
+  #alreadyCreated: boolean = false;
 
   constructor(private firestore: AngularFirestore, private authentication: AngularFireAuth, private router: Router) {
     this.authentication.authState.subscribe({
@@ -79,7 +80,7 @@ export class AuthenticationService {
       .catch(this.#onError);
   }
 
-  #storeUser(userToStore: any) {
+  async #storeUser(userToStore: any) {
     let user: User = {
       id: userToStore.uid,
       name: userToStore.displayName,
@@ -89,19 +90,22 @@ export class AuthenticationService {
       isAdmin: false
     }
 
-    this.firestore.collection("users").add(user)
+    if (!this.#alreadyCreated) {
+      this.#alreadyCreated = true;
+      this.firestore.collection("users").add(user)
       .then(storedUser => {
         storedUser.get()
           .then(currentUser => {
             this.#loggedUserSubject.next(currentUser.data() as User);
             this.router.navigate(["game/home"])
           })
-          .catch(this.#onError)
+          .catch(this.#onError);
       })
-      .catch(this.#onError)
+      .catch(this.#onError);
+    }
   }
 
-  #getUserFromCollection(userData: any) {
+  async #getUserFromCollection(userData: any) {
     this.firestore.collection("users").ref.where("email", "==", userData.email)
       .get()
       .then(response => {
