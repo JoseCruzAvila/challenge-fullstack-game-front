@@ -87,7 +87,7 @@ export class AuthenticationService {
       id: userToStore.uid,
       name: userToStore.displayName,
       email: userToStore.email,
-      profileImage: "",
+      profileImage: userToStore.photoURL,
       emailVerified: userToStore.emailVerified,
       isAdmin: false
     }

@@ -34,7 +34,8 @@ export class HomeComponent implements OnInit {
       },
       error: console.error
     });
-    this.cards = Array.from(Array(11).keys());  
+    this.cards = Array.from(Array(11).keys());
+    this.cards = this.cards.filter(card => card > 0);
   }
 
   changeForm(): void {
