@@ -1,8 +1,112 @@
 .content
-    margin-top: 20px
-    width: 100%
-    height: 100%
+    width: 100vw
+    height: 100vh
+    background-color: #19273b
     
+.form
+    box-shadow: 5px 10px 18px #212529
+    border-radius: 20px
+
+.input-icon
+    width: 50px
+    background-color: #FFC312
+    color: black
+    border:0 !important
 
 .mt-35
-    margin-top: 3.5%
+    margin-top: 15vh
+
+.pd-20
+    padding-bottom: 3vh
+
+.button     
+    &.dark 
+        --background: #2F3545
+        --shadow: 0 2px 8px -1px #{rgba(#151924, .32)}
+        --shadow-hover: 0 4px 20px -2px #{rgba(#151924, .5)}
+    
+
+
+.button 
+    --background: #275efe
+    --text: #fff
+    --font-size: 16px
+    --duration: .5s
+    --move-hover: -4px
+    --shadow: 0 2px 8px -1px #{rgba(#275efe, .32)}
+    --shadow-hover: 0 4px 20px -2px #{rgba(#275efe, .5)}
+    padding: 16px 32px
+    font-family: 'Roboto'
+    font-weight: 500
+    line-height: var(--font-size)
+    border-radius: 24px
+    display: block
+    outline: none
+    border: none
+    cursor: pointer
+    text-decoration: none
+    font-size: var(--font-size)
+    letter-spacing: .5px
+    background: var(--background)
+    color: var(--text)
+    box-shadow: var(--shadow)
+    transform: translateY(var(--y))
+    transition: transform var(--duration) ease, box-shadow var(--duration) ease
+    -webkit-tap-highlight-color: transparent
+    -webkit-appearance: none
+    div 
+        display: flex
+        span 
+            display: block
+            backface-visibility: hidden
+            font-style: normal
+            $i: 1
+            @while $i < 12 
+                &:nth-child(#{$i}) 
+                    --d: #{$i / 20 + s}
+                
+                $i: $i + 1
+            
+    &:hover 
+        --y: var(--move-hover)
+        --shadow: var(--shadow-hover)
+        --move: -4px
+        --shadow-active: 0 3px 1px rgba(0, 0, 0, .2)
+        span 
+            animation: move var(--duration) linear var(--d)
+    &.drive 
+        --move: 16px
+        --skew: 25deg
+        --skew-fast: 40deg
+        --skew-bounce: -12px
+        &:hover 
+            span 
+                --duration: 1s
+                transform-origin: 50% 100%
+                animation: drive var(--duration) linear var(--d)
+               
+@keyframes move 
+    40% 
+        transform: translateY(var(--move))
+        text-shadow: var(--shadow-active)
+    
+@keyframes drive 
+    40% 
+        opacity: 1
+    
+    55% 
+        transform: skewX(var(--skew)) translateX(var(--move))
+    
+    56% 
+        transform: skewX(var(--skew-fast)) translateX(calc(var(--move) * -1))
+    
+    55%,
+    56% 
+        opacity: 0
+    
+    75% 
+        transform: skewX(var(--skew))
+    
+    85% 
+        transform: skewX(var(--skew-bounce))
+    
