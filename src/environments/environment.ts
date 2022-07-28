@@ -14,8 +14,8 @@ export const environment = {
   production: false,
   gameUrls: {
     websocket: "ws://localhost:8888/retrieve/",
-    game: "http://localhost:8080/",
-    player: "http://localhost:7777/",
+    game: "http://localhost:8080/game/",
+    player: "http://localhost:7777/player/",
     card: "http://localhost:7072/"
   }
 };

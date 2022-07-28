@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import * as auth from 'firebase/auth';
 import { User } from '../models/user';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { PlayerService } from './player.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class AuthenticationService {
   public readonly loggedUser: Observable<User> = this.#loggedUserSubject.asObservable();
   #alreadyCreated: boolean = false;
 
-  constructor(private firestore: AngularFirestore, private authentication: AngularFireAuth, private router: Router) {
+  constructor(private firestore: AngularFirestore, private authentication: AngularFireAuth, private router: Router, 
+    private playerService: PlayerService) {
     this.authentication.authState.subscribe({
       next: (response) => {
         if (response != null) this.#getUserFromCollection(response);
@@ -102,6 +104,8 @@ export class AuthenticationService {
           .catch(this.#onError);
       })
       .catch(this.#onError);
+
+      this.playerService.createPlayer(user.name, user.email);
     }
   }
 
@@ -120,7 +124,13 @@ export class AuthenticationService {
       return user.email.includes(userData.email)
     })[0];
     
-    currentUser != undefined ? this.#loggedUserSubject.next(currentUser.data() as User) : this.#storeUser(userData);
+    if (currentUser != undefined) {
+      let user: User = currentUser.data();
+      this.#loggedUserSubject.next(user);
+      this.playerService.getPlayerData(user.email);
+    } else {
+      this.#storeUser(userData);
+    }
   }
 
   #onError(error: any) {
