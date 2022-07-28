@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import * as auth from 'firebase/auth';
 import { User } from '../models/user';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { PlayerService } from './player.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,10 @@ export class AuthenticationService {
 
   #loggedUserSubject: BehaviorSubject<User> = new BehaviorSubject({} as User);
   public readonly loggedUser: Observable<User> = this.#loggedUserSubject.asObservable();
+  #alreadyCreated: boolean = false;
 
-  constructor(private firestore: AngularFirestore, private authentication: AngularFireAuth, private router: Router) {
+  constructor(private firestore: AngularFirestore, private authentication: AngularFireAuth, private router: Router, 
+    private playerService: PlayerService) {
     this.authentication.authState.subscribe({
       next: (response) => {
         if (response != null) this.#getUserFromCollection(response);
@@ -79,29 +82,34 @@ export class AuthenticationService {
       .catch(this.#onError);
   }
 
-  #storeUser(userToStore: any) {
+  async #storeUser(userToStore: any) {
     let user: User = {
       id: userToStore.uid,
       name: userToStore.displayName,
       email: userToStore.email,
-      profileImage: "",
+      profileImage: userToStore.photoURL,
       emailVerified: userToStore.emailVerified,
       isAdmin: false
     }
 
-    this.firestore.collection("users").add(user)
+    if (!this.#alreadyCreated) {
+      this.#alreadyCreated = true;
+      this.firestore.collection("users").add(user)
       .then(storedUser => {
         storedUser.get()
           .then(currentUser => {
             this.#loggedUserSubject.next(currentUser.data() as User);
             this.router.navigate(["game/home"])
           })
-          .catch(this.#onError)
+          .catch(this.#onError);
       })
-      .catch(this.#onError)
+      .catch(this.#onError);
+
+      this.playerService.createPlayer(user.name, user.email);
+    }
   }
 
-  #getUserFromCollection(userData: any) {
+  async #getUserFromCollection(userData: any) {
     this.firestore.collection("users").ref.where("email", "==", userData.email)
       .get()
       .then(response => {
@@ -116,7 +124,13 @@ export class AuthenticationService {
       return user.email.includes(userData.email)
     })[0];
     
-    currentUser != undefined ? this.#loggedUserSubject.next(currentUser.data() as User) : this.#storeUser(userData);
+    if (currentUser != undefined) {
+      let user: User = currentUser.data();
+      this.#loggedUserSubject.next(user);
+      this.playerService.getPlayerData(user.email);
+    } else {
+      this.#storeUser(userData);
+    }
   }
 
   #onError(error: any) {

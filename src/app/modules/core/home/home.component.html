@@ -2,13 +2,13 @@
 <div class="content">
     <div class="row row-cols-1 row-cols-md-2 g-4" style="padding: 1%;">
         <div class="col mt-35">
-            <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="./../../../../assets/img/card-back/0.jpg" class="d-block w-100" alt="...">
+                        <img src="../../../../assets/img/card-back/0.jpg" class="d-block w-100" alt="...">
                     </div>
                     <div class="carousel-item" *ngFor="let card of cards">
-                        <img src="./../../../../assets/img/card-back/{{card}}.jpg" class="d-block w-100" alt="...">
+                        <img src="../../../../assets/img/card-back/{{ card }}.jpg" class="d-block w-100" alt="...">
                     </div>
                 </div>
             </div>
@@ -58,12 +58,14 @@
                             </div>
                             <!--<div class="mb-3">
                                 <label for="power" class="form-label">Ingresa el Id del juego</label>
-                                <input type="text" class="form-control" id="id" placeholder="#32" name="id" required formControlName="gameId">
+                                <input type="text" class="form-control" id="id" placeholder="#32" name="id" required
+                                    formControlName="gameId">
                             </div>
                         
                              <div class="mb-3 pd-20" *ngIf="!joinSesion">
                                 <label for="power" class="form-label">Numero de jugadores</label>
-                                <input type="text" class="form-control" id="id" placeholder="2" name="id" required formControlName="playerNumber">
+                                <input type="text" class="form-control" id="id" placeholder="2" name="id" required
+                                    formControlName="playerNumber">
                             </div>
                         -->
                             <div class="input-group pd-20" *ngIf="!joinSesion">
