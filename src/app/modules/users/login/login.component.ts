@@ -9,20 +9,25 @@ import { AuthenticationService } from 'src/app/shared/services/authentication.se
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private authService: AuthenticationService, private router: Router) { 
-    //private displayService: DisplayService
-  }
+  constructor(private authService: AuthenticationService, private router: Router) {}
 
   ngOnInit(): void {
-    this.authService.isLoggedIn ? this.router.navigate(['game/home']): "";
+    this.authService.loggedUser.subscribe({
+      next: (value) => {
+        if (value.email != undefined) this.router.navigate(['game/home']);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   signIn(userName: string, password: string) {
-    this.authService.SignIn(userName, password);
+    this.authService.signIn(userName, password);
   }
 
   auth() {
-    this.authService.GoogleAuth();
+    this.authService.googleAuth();
   }
 
 }

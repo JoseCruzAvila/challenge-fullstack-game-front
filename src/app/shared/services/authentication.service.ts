@@ -1,143 +1,125 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import * as auth from 'firebase/auth';
 import { User } from '../models/user';
-import { CookieService } from "ngx-cookie-service";
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  userData: any;
+  #loggedUserSubject: BehaviorSubject<User> = new BehaviorSubject({} as User);
+  public readonly loggedUser: Observable<User> = this.#loggedUserSubject.asObservable();
 
-  constructor(
-    public store: AngularFirestore,
-    public authentication: AngularFireAuth,
-    public router: Router,
-    private cookieService : CookieService
-  ) {
-    this.authentication.authState.subscribe((user) => {
-      if (user) {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user')!);
-      } else {
-        localStorage.setItem('user', 'null');
-        JSON.parse(localStorage.getItem('user')!);
+  constructor(private firestore: AngularFirestore, private authentication: AngularFireAuth, private router: Router) {
+    this.authentication.authState.subscribe({
+      next: (response) => {
+        if (response != null) this.#getUserFromCollection(response);
+      },
+      error: (e) => {
+        this.#onError(e);
       }
     });
   }
 
-  // Iniciar sesión con correo electrónico/contraseña
-  SignIn(email: string, password: string) {
-    return this.authentication
-      .signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        this.router.navigate(['game/home']);
-        //this.SetUserData(result.user);
-        console.log(JSON.stringify(result.user));
-        localStorage.setItem('user', JSON.stringify(result.user));
-        this.cookieService.set('user', JSON.stringify(result.user));
+  async signIn(email: string, password: string) {
+    this.authentication.signInWithEmailAndPassword(email, password)
+      .then(response => {
+        this.#getUserFromCollection(response.user);
       })
-      .catch((error) => {
-        window.alert(error.message);
-      });
+      .catch(this.#onError);
   }
 
   // Regístrese
-  SignUp(email: string, password: string) {
-    return this.authentication
-      .createUserWithEmailAndPassword(email, password)
-      .then((result) => {
-        this.SendVerificationMail();
-        this.SetUserData(result.user);
-      })
-      .catch((error) => {
-        window.alert(error.message);
+  async signUp(email: string, password: string) {
+    this.authentication.createUserWithEmailAndPassword(email, password)
+      .then(response => {
+        this.#getUserFromCollection(response.user);
       });
   }
 
   // Enviar verificación de correo electrónico cuando se registre un nuevo usuario
-  SendVerificationMail() {
-    return this.authentication.currentUser
-      .then((u: any) => u.sendEmailVerification())
-      .then(() => {
-        this.router.navigate(['verificar el correo']);
-      });
+  async sendVerificationEmail() {
+    this.authentication.currentUser
+      .then(user => {
+        user!.sendEmailVerification()
+          .then(() => this.router.navigate(['verificar el correo']))
+          .catch(this.#onError);
+      })
+      .catch(this.#onError);
   }
 
-  // Restablecer mi contraseña
-  ForgotPassword(passwordResetEmail: string) {
-    return this.authentication
+  async forgotPassword(passwordResetEmail: string) {
+    this.authentication
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
         window.alert('Correo electrónico de restablecimiento de contraseña enviado, verifique su bandeja de entrada.');
-        this.router.navigate(['login'])
+        this.router.navigate(['login']);
       })
-      .catch((error) => {
-        window.alert(error);
-      });
+      .catch(this.#onError);
   }
 
-  // Devuelve verdadero cuando el usuario inicia sesión y se verifica el correo electrónico
-  get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user')!);
-    //return user !== null && user.emailVerified !== false ? true : false;
-    return user !== null ? true : false;
-  }
-
-  // Iniciar sesion con Google
-  GoogleAuth() {
-    return this.AuthLogin(new auth.GoogleAuthProvider()).then((result: any) => {
-      if (result) {
-        this.SetUserData(result.user);
-        this.router.navigate(['game/home']);
-      }
-    });
-  }
-
-  AuthLogin(provider: any) {
-    return this.authentication
-      .signInWithPopup(provider)
-      .then((result) => {        
-        this.router.navigate(['game/home']);
-        this.SetUserData(result.user);
+  async googleAuth() {
+    this.authentication.signInWithPopup(new auth.GoogleAuthProvider())
+      .then(response => {
+        this.#getUserFromCollection(response.user);
       })
-      .catch((error) => {
-        window.alert(error);
-      });
+      .catch(this.#onError);
   }
 
-
-  SetUserData(user: any) {
-    const userRef: AngularFirestoreDocument<any> = this.store.doc(`users/${user.uid}`);
-    const userData: User = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-      emailVerified: user.emailVerified,
-      admin: true
-    };
-    
-    console.log(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
-    
-    this.cookieService.set('user', JSON.stringify(userData));
-    return userRef.set(userData, {
-      merge: true,
-    });
+  async signOut() {
+    return this.authentication.signOut()
+      .then(() => {
+        this.#loggedUserSubject.next({} as User);
+        this.router.navigate(['login']);
+      })
+      .catch(this.#onError);
   }
 
-  // Cerrar session
-  SignOut() {
-    return this.authentication.signOut().then(() => {
-      localStorage.removeItem('user');
-      this.cookieService.delete('user');
-      this.router.navigate(['login']);
-    });
+  #storeUser(userToStore: any) {
+    let user: User = {
+      id: userToStore.uid,
+      name: userToStore.displayName,
+      email: userToStore.email,
+      profileImage: "",
+      emailVerified: userToStore.emailVerified,
+      isAdmin: false
+    }
+
+    this.firestore.collection("users").add(user)
+      .then(storedUser => {
+        storedUser.get()
+          .then(currentUser => {
+            this.#loggedUserSubject.next(currentUser.data() as User);
+            this.router.navigate(["game/home"])
+          })
+          .catch(this.#onError)
+      })
+      .catch(this.#onError)
+  }
+
+  #getUserFromCollection(userData: any) {
+    this.firestore.collection("users").ref.where("email", "==", userData.email)
+      .get()
+      .then(response => {
+        this.#loadLoggedUserOrStore(response, userData);
+      })
+      .catch(this.#onError);
+  }
+
+  #loadLoggedUserOrStore(response: any, userData: any) {
+    let currentUser = response.docs.filter((doc: any) => {
+      let user = doc.data() as User;
+      return user.email.includes(userData.email)
+    })[0];
+    
+    currentUser != undefined ? this.#loggedUserSubject.next(currentUser.data() as User) : this.#storeUser(userData);
+  }
+
+  #onError(error: any) {
+    console.error(error);
   }
 }

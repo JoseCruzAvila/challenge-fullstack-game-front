@@ -14,18 +14,16 @@
           <a class="nav-link dropdown-toggle text-white" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
             <em class="fas fa-user"></em>
-            {{ userName }}
+            {{ userName() }}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li (click)="openPopup()">
-              <i class="fa-solid fa-cards-blank"></i>
-              <a class="dropdown-item ">
+            <li>
+              <a class="dropdown-item cursor-pointer">
                 Perfil
               </a>
             </li>
-            <li *ngIf="isAdmin" routerLink="/game/cards">
-              <i class="fa-solid fa-cards-blank"></i>
-              <a class="dropdown-item ">
+            <li *ngIf="isAdmin()" routerLink="/game/cards">
+              <a class="dropdown-item cursor-pointer">
                 Gestionar cartas
               </a>
             </li>
@@ -43,9 +41,9 @@
 </nav>
 
 
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}">
+<div class="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
-    <form id="create-game-card" [formGroup]="profileForm" (ngSubmit)="updateUser()">
+    <form id="create-game-card" (ngSubmit)="updateUser()">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">Perfil</h5>
@@ -74,7 +72,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" (click)="closePopup()">Close</button>
+          <button type="button" class="btn btn-danger">Close</button>
         </div>
       </div>
     </form>

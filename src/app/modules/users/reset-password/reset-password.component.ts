@@ -12,11 +12,18 @@ export class ResetPasswordComponent implements OnInit {
   constructor(private authService: AuthenticationService, private router: Router) { }
 
   ngOnInit(): void {
-    this.authService.isLoggedIn ? this.router.navigate(['game/home']): '';
+    this.authService.loggedUser.subscribe({
+      next: (value) => {
+        if (value.email != undefined) this.router.navigate(['game/home']);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   forgotPassword(email: string) {
-    this.authService.ForgotPassword(email);
+    this.authService.forgotPassword(email);
   }
 
 }

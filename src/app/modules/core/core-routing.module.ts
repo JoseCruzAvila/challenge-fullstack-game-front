@@ -4,25 +4,21 @@ import { HomeComponent } from './home/home.component';
 import { CardsComponent } from "./cards/cards.component";
 import { GameComponent } from "./game/game.component";
 import { AuthGuard } from './../../auth/auth.guard';
+import { AdminGuard } from 'src/app/auth/admin.guard';
 
 const routes: Routes = [
   {
     path: 'home',
-    component: HomeComponent,
-    data:{
-      requiresLogin: true
-    }
+    component: HomeComponent
   },
   {
     path: 'cards',
-    component: CardsComponent,
-    canActivate: [AuthGuard],
-    data:{ }
+    canActivate: [AdminGuard],
+    component: CardsComponent
   },
   {
     path: 'fight',
     component: GameComponent,
-    data:{ }
   },
 ];
 

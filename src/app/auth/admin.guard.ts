@@ -6,28 +6,23 @@ import { AuthenticationService } from '../shared/services/authentication.service
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
 
-  constructor(private authService: AuthenticationService, private router : Router){}
+  constructor(private authService: AuthenticationService, private router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    
-    this.authService.loggedUser.subscribe({
-      next: (value) => {
-        if (value.email == undefined) this.#goLogin();
-      },
-      error: () => {
-        this.#goLogin();
-      }
-    });
-    
-    return true;
-  }
-
-  #goLogin() {
-    this.router.navigate(["login"]);
+      this.authService.loggedUser.subscribe({
+        next: (value) => {
+          if (!value.isAdmin) this.router.navigate(["game/home"]);
+        },
+        error: (error) => {
+          this.router.navigate(["login"]);
+        }
+      });
+      
+      return true;
   }
   
 }

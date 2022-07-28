@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Card } from '../models/card';
 
 export interface Message {
   user: string;
@@ -25,8 +26,8 @@ export class GameService {
     return this.http.post(`${this.url}card/create`, data, { responseType: 'text' });
   }
 
-  getCards(): Observable<any> {
-    return this.http.get(`${this.url}card`);
+  getCards(): Observable<Card[]> {
+    return this.http.get<Card[]>(`${this.url}card`);
   }
 
   updateCard(data : Card){
@@ -34,9 +35,3 @@ export class GameService {
   }
 }
 
-interface Card {
-  id ?: string,
-  image : string,
-  power : number,
-  description : string
-}

@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 import { CookieService } from "ngx-cookie-service";
+import { User } from 'src/app/shared/models/user';
 
 @Component({
   selector: 'app-header',
@@ -11,55 +12,54 @@ import { CookieService } from "ngx-cookie-service";
 })
 export class HeaderComponent implements OnInit {
 
-  displayStyle: string = "none";
-  loggedUser : string = "";
-  userName   : string = "";
-  isAdmin : boolean = true;
-  profileForm! : FormGroup;
-  
+  #user!: User;
+
   constructor(
-    private router:Router,
+    private router: Router,
     private authService: AuthenticationService,
     private formGroup: FormBuilder,
-    private cookieService: CookieService
   ) {
-   
-    let user = JSON.parse(this.cookieService.get('user'))
-    
-    if (user != null) {
-      this.isAdmin = user.admin;
-      this.loggedUser = user.email;
-      this.userName = this.loggedUser.split('@')[0];
-    }
-    this.profileForm = this.formGroup.group({
+    /*this.profileForm = this.formGroup.group({
       email: new FormControl("", [Validators.required]),
       //descripcion: new FormControl("", [Validators.required]),
     });
-    this.profileForm.get("email")?.setValue(this.loggedUser);
-   }
+    this.profileForm.get("email")?.setValue(this.#user.email);*/
+  }
 
   ngOnInit(): void {
-    this.loggedUser === "" ?  this.router.navigate(['login']) : "";
+    this.authService.loggedUser.subscribe({
+      next: (value: any) => {
+        if (value.email == undefined) this.router.navigate(['login']);
+        this.#user = value;
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   signOut() {
-    this.authService.SignOut();
+    this.authService.signOut();
+  }
+
+  updateUser(): void {
+
+  }
+
+  userName() {
+    return this.#user.name;
+  }
+
+  userEmail() {
+    return this.#user.email;
+  }
+
+  isAdmin() {
+    return this.#user.isAdmin;
   }
 
   isLogged() {
-    return this.authService.isLoggedIn;
-  }
-
-  closePopup(): void {
-    this.displayStyle = "none"; // "none"
-  }
-
-  openPopup() {   
-    this.displayStyle = "block";
-  }
-
-  updateUser():void {
-
+    return this.#user != null;
   }
 
 }
