@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Card } from '../models/card';
+import { Game } from '../models/game';
+import { Player } from '../models/player';
 
 export interface Message {
   user: string;
@@ -14,24 +16,18 @@ export interface Message {
 })
 
 export class GameService {
-  private url: string;
-
-  public messages!: Subject<any>;
+  #url!: string;
 
   constructor(private http: HttpClient) {
-    this.url = `${environment.gameUrls.card}api/`;    
+    this.#url = environment.gameUrls.game;
   }
 
-  createCard(data : Card): Observable<any> {
-    return this.http.post(`${this.url}card/create`, data, { responseType: 'text' });
+  createGame(gameId: string, players: Player[], currentPlayersNumber: number): any {
+    return this.http.post<Game>(this.#url, {gameId, players, currentPlayersNumber});
   }
 
-  getCards(): Observable<Card[]> {
-    return this.http.get<Card[]>(`${this.url}card`);
-  }
-
-  updateCard(data : Card){
-    return this.http.post(`${this.url}card/create`, data, { responseType: 'text' });
+  startGame(gameId: string): any {
+    return this.http.put<Game>(`${this.#url}start/${gameId}`, {});
   }
 }
 

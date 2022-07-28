@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { GameService } from 'src/app/shared/services/game.service';
+import { CardService } from 'src/app/shared/services/card.service';
 
 @Component({
   selector: 'app-create-card',
@@ -27,7 +27,7 @@ export class CreateCardComponent implements OnInit {
   poder : string = '';
   descripcion : string = '';
   cardForm! : FormGroup;
-  constructor(private service: GameService, private formGroup: FormBuilder,) {
+  constructor(private service: CardService, private formGroup: FormBuilder,) {
     
     this.cardForm = this.formGroup.group({
       poder: new FormControl('', [Validators.required]),

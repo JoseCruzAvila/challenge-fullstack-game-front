@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { GameService } from 'src/app/shared/services/game.service';
+import { CardService } from 'src/app/shared/services/card.service';
 
 @Component({
   selector: 'app-cards',
@@ -18,7 +18,7 @@ export class CardsComponent implements OnInit {
   modalTitle: string = "Completa tu carta";
   info : any;
 
-  constructor( private service: GameService) {
+  constructor( private service: CardService) {
     this.getCardsCreated();
     this.changeView();
    }
