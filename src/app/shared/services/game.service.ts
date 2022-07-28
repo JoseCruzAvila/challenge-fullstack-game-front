@@ -1,8 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Card } from '../models/card';
 import { Game } from '../models/game';
 import { Player } from '../models/player';
 
