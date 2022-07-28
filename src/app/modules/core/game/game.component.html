@@ -2,13 +2,22 @@
 <div class="container">
     <div class="content" style="margin-top: 7.8vh;" cdkDropListGroup>
 
-        <div class="fight" cdkDropList (cdkDropListDropped)="drop($event)">
-
+        <div class="fight" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListData]="cards2">
+            <div class="row row-cols-1 row-cols-md-6 g-4" cdkDropList *ngIf="cards1" [cdkDropListData]="cards1">
+                <div class="col marvel-card"  *ngFor="let card of cards2" cdkDrag >
+                  <div class="card h-100">
+                    <img src="./../../../../assets/img/marvel-cards/{{card}}.jpg" class="card-img-top" alt="...">
+                    <div class="card-footer h-100">
+                        <small class="text-muted" style="font-size: 13px;">Poder: 80</small> <br>
+                      </div>
+                  </div>
+                </div>   
+            </div>
         </div>
 
         <!--Deck 1-->
-        <div class="deck-h deck1" cdkDropList>
-            <div class="row row-cols-1 row-cols-md-6 g-4" *ngIf="cards1" (cdkDropListData)="cards1">
+        <div class="deck-h deck1" >
+            <div class="row row-cols-1 row-cols-md-6 g-4" cdkDropList *ngIf="cards1" [cdkDropListData]="cards1">
                 <div class="col marvel-card"  *ngFor="let card of cards1" cdkDrag >
                   <div class="card h-100">
                     <img src="./../../../../assets/img/marvel-cards/{{card}}.jpg" class="card-img-top" alt="...">

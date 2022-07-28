@@ -9,7 +9,6 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from 'src/environments/environment';
 import { HttpClientModule } from '@angular/common/http';
-import { DragDropModule } from "@angular/cdk/drag-drop";
 
 @NgModule({
   declarations: [
@@ -24,7 +23,6 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
     AngularFireStorageModule,
     AngularFireDatabaseModule,
     HttpClientModule,
-    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]

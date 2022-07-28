@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CdkDragDrop } from "@angular/cdk/drag-drop";
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { Observable } from 'rxjs';
+
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -18,10 +19,25 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  ngOnChanges(){
+    if (this.cards2.length === 6) {
+      console.log("todos ya jugaron");
+      
+    }
+  }
 
   drop(event: CdkDragDrop<number[]>):void{
-    //transfer
-    console.log(event);
+    transferArrayItem(
+      event.previousContainer.data,
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex
+    );
+    console.log(event.container.data);
+
+    if(event.container.data.length === 6){
+      alert("todos ya jugaron");
+    }
     
   }
 
