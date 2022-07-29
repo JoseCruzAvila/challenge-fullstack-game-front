@@ -47,7 +47,6 @@ export class GameService {
   initSocket(gameId : string): void {
     this.messages = <Subject<Message>>(
       this.socket.connect(this.#socket_url + gameId).pipe(map((response: MessageEvent): any => {
-        console.log(JSON.parse(response.data));
         return JSON.parse(response.data);
       }))
     );

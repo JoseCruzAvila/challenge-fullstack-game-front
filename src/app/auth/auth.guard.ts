@@ -15,14 +15,14 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     return this.authService.currentUser.then((response) => {
-      if (response?.email != null && response.email != undefined) {
-        return true;
+      if (response?.email == null || response.email == undefined) {
+        return false;
       }
-      
-      return false;
+
+      return true;
     })
     .catch((_error) => {
-      this.router.navigate(["login"])
+      this.router.navigate(["login"]);
       return false;
     });
   }
