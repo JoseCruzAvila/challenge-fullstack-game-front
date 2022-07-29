@@ -81,6 +81,7 @@ export class HomeComponent implements OnInit {
         this.game = response;
         this.gameService.setGameSubject(this.game);
         this.waitingUsers = true;
+        this.isHost = false;
       },
       error: console.error
     });
