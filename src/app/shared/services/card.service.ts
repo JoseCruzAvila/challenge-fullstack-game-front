@@ -13,18 +13,18 @@ export class CardService {
   public messages!: Subject<any>;
 
   constructor(private http: HttpClient) {
-    this.url = `${environment.gameUrls.card}api/`;    
+    this.url = `${environment.gameUrls.card}`;    
   }
 
   createCard(data : Card): Observable<any> {
-    return this.http.post(`${this.url}card/create`, data, { responseType: 'text' });
+    return this.http.post(`${this.url}create`, data, { responseType: 'text' });
   }
 
   getCards(): Observable<Card[]> {
-    return this.http.get<Card[]>(`${this.url}card`);
+    return this.http.get<Card[]>(`${this.url}`);
   }
 
   updateCard(data : Card){
-    return this.http.post(`${this.url}card/create`, data, { responseType: 'text' });
+    return this.http.post(`${this.url}create`, data, { responseType: 'text' });
   }
 }

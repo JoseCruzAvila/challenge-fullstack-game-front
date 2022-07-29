@@ -49,7 +49,7 @@
                             </div>
                         </div>
                     </div>
-                    <a *ngIf="waitingUsers" class="btn btn-primary mt-35 ms-auto me-auto" (click)="startGame()">Iniciar Juego</a>
+                    <a *ngIf="waitingUsers && isHost" class="btn btn-primary mt-35 ms-auto me-auto" (click)="startGame()">Iniciar Juego</a>
 
                     <div *ngIf="!waitingUsers">
                         <form id="create-game-card" [formGroup]="createGameForm" (ngSubmit)="createGame()">

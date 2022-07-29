@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Game } from '../models/game';
+import { Player } from '../models/player';
 import { GameSocket } from './socket.service';
 
 export interface Message {
@@ -35,6 +36,10 @@ export class GameService {
     return this.http.put<Game>(`${this.#url}start/${gameId}`, {});
   }
 
+  joinToGame(gameId: string, player: Player): any {
+    return this.http.put<Game>(`${this.#url}join/${gameId}`, player);
+  }
+
   public setGameSubject(game: Game) {
     this.#gameSubject.next(game);
   }
@@ -42,7 +47,6 @@ export class GameService {
   initSocket(gameId : string): void {
     this.messages = <Subject<Message>>(
       this.socket.connect(this.#socket_url + gameId).pipe(map((response: MessageEvent): any => {
-        console.log(JSON.parse(response.data));
         return JSON.parse(response.data);
       }))
     );

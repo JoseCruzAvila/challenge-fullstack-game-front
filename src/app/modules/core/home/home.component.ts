@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { map } from 'rxjs';
 import { Game } from 'src/app/shared/models/game';
 import { Player } from 'src/app/shared/models/player';
 import { GameService } from 'src/app/shared/services/game.service';
@@ -13,21 +14,23 @@ import { PlayerService } from 'src/app/shared/services/player.service';
 })
 export class HomeComponent implements OnInit {
 
-  cards : Array<number> = [];
-  imageurl    : string = "./../../../../assets/img/card-back/";
-  joinSesion : boolean = false;
-  buttonText : string = "Unirse a una partida";
-  waitingUsers :boolean = false;
+  cards: Array<number> = [];
+  imageurl: string = "./../../../../assets/img/card-back/";
+  joinSesion: boolean = false;
+  buttonText: string = "Unirse a una partida";
+  waitingUsers: boolean = false;
   displayStyle: string = "none";
   #player!: Player;
   game!: Game;
+  isHost: boolean = true;
 
-  createGameForm :  FormGroup;
-  constructor(private router: Router,  private formGroup: FormBuilder, private playerService: PlayerService,
-    private gameService: GameService) { 
+  createGameForm: FormGroup;
+  constructor(private router: Router, private formGroup: FormBuilder, private playerService: PlayerService,
+    private gameService: GameService) {
+
     this.createGameForm = this.formGroup.group({
       gameId: new FormControl('', [Validators.required]),
-      playerNumber : new FormControl(2, [Validators.required])
+      playerNumber: new FormControl(2, [Validators.required])
     })
   }
 
@@ -43,7 +46,7 @@ export class HomeComponent implements OnInit {
   }
 
   changeForm(): void {
-    if(this.joinSesion){
+    if (this.joinSesion) {
       this.joinSesion = false;
       this.buttonText = "Unirse a una partida"
     } else {
@@ -52,7 +55,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  createGame():void{
+  createGame(): void {
     let gameToCreate = {
       gameId: this.createGameForm.get("gameId")?.value,
       players: [this.#player],
@@ -66,13 +69,27 @@ export class HomeComponent implements OnInit {
       },
       error: console.error
     });
+
+    this.#socketConnect(gameToCreate.gameId);
   }
 
-  joinGame(){
-    this.router.navigate(['game/fight']);
+  joinGame() {
+    let gameId: string = this.createGameForm.get("gameId")?.value;
+
+    this.gameService.joinToGame(gameId, this.#player).subscribe({
+      next: (response: any) => {
+        this.game = response;
+        this.gameService.setGameSubject(this.game);
+        this.waitingUsers = true;
+        this.isHost = false;
+      },
+      error: console.error
+    });
+
+    this.#socketConnect(gameId);
   }
 
-  startGame():void {
+  startGame(): void {
     this.gameService.startGame(this.game.gameId).subscribe({
       next: (value: any) => {
         this.gameService.setGameSubject(value);
@@ -83,7 +100,24 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  closePopup():void {//displayStyle: string = "none";
+  #socketConnect(gameId: string) {
+    this.gameService.initSocket(gameId);
+    this.gameService.messages.subscribe({
+      next: (value) => {
+        console.log(value);
+        if (value.type == "game.PlayerAdded") {
+          if (this.game.players.filter(player => player.email == value.source.email).length == 0) {
+            this.isHost = this.isHost && value.source.email != this.#player.email;
+            this.game.players.push(value.source);
+            this.gameService.setGameSubject(this.game);
+          }
+        }
+      },
+      error: console.error
+    });
+  }
+
+  closePopup(): void {//displayStyle: string = "none";
     this.displayStyle = ''//event.display;
   }
 

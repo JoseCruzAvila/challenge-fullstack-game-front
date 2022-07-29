@@ -99,13 +99,13 @@ export class AuthenticationService {
         storedUser.get()
           .then(currentUser => {
             this.#loggedUserSubject.next(currentUser.data() as User);
-            this.router.navigate(["game/home"])
           })
           .catch(this.#onError);
       })
       .catch(this.#onError);
 
       this.playerService.createPlayer(user.name, user.email);
+      this.router.navigate(["game/home"])
     }
   }
 

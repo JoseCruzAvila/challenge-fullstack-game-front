@@ -1,33 +1,30 @@
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthenticationService } from '../shared/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private authService: AuthenticationService, private router : Router){}
+  constructor(private authService: AngularFireAuth, private router: Router) { }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    
-    this.authService.loggedUser.subscribe({
-      next: (value) => {
-        if (value.email == undefined) this.#goLogin();
-      },
-      error: () => {
-        this.#goLogin();
+
+    return this.authService.currentUser.then((response) => {
+      if (response?.email == null || response.email == undefined) {
+        return false;
       }
+
+      return true;
+    })
+    .catch((_error) => {
+      this.router.navigate(["login"]);
+      return false;
     });
-    
-    return true;
   }
 
-  #goLogin() {
-    this.router.navigate(["login"]);
-  }
-  
 }
