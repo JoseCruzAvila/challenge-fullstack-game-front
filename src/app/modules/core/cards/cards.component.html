@@ -1,34 +1,38 @@
 <app-header></app-header>
-<div class="container">
-    <!--<div class="btn-cotainer">
-        <button type="button" class="btn btn-primary btn-lg">Crear Carta</button>
-        <button type="button" class="btn btn-primary btn-lg">Cartas Creadas</button>
-    </div>-->
-    <h2 style="text-align: center;">{{title}}</h2>
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-bottom: 5px;">  
-        <button class="btn btn-primary btn-lg" type="button" (click)="changeView()">
-            {{buttonText}}
-        </button>
+<div class="container" style="width: 100%;">
+  <h2 style="text-align: center;">{{title}}</h2>
+  <!--<div id="imagen">
+    <div id="info">
+      <p id="headline">Título</p>
+      <p id="descripcion">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente voluptates.</p>
     </div>
-    <div class="row row-cols-1 row-cols-md-6 g-4" *ngIf="createCards">
-        <div class="col marvel-card"  *ngFor="let card of cardsToCreate">
-          <div class="card h-100" (click)="openPopup(card,1)">
-            <img src="./../../../../assets/img/marvel-cards/{{card}}.jpg" class="card-img-top" alt="...">
-          </div>
-        </div>   
+  </div>-->
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-bottom: 2%;">
+   
+    <button class="button drive dark" type="button" (click)="changeView()">
+      {{buttonText}}
+    </button>
+  </div>
+  <div class="row row-cols-1 row-cols-md-6 g-4" *ngIf="createCards" >
+    <div class="col marvel-card" *ngFor="let card of cardsToCreate">
+      <div class="card h-100" (click)="openPopup(card,1)">
+        <img src="./../../../../assets/img/marvel-cards/{{card}}.jpg" class="card-img-top" alt="...">
+      </div>
     </div>
+  </div>
 
-    <div class="row row-cols-1 row-cols-md-6 g-4" *ngIf="!createCards">
-        <div class="col marvel-card"  *ngFor="let card of cards">
-          <div class="card h-100" (click)="openPopup(card,2)">
-            <img src="./../../../../assets/img/marvel-cards/{{card.image}}.jpg" class="card-img-top" alt="...">
-            <div class="card-footer h-100">
-              <small class="text-muted">Poder: {{ card.power }}</small> <br>
-              <small class="text-muted">Descripcion: {{ card.description }}</small>
-            </div>
-          </div>
-        </div>   
+  <div class="row row-cols-md-6 g-4" *ngIf="!createCards">
+    <div class="col marvel-card" *ngFor="let card of cards">
+      <div class="card h-100" (click)="openPopup(card,2)">
+        <img src="./../../../../assets/img/marvel-cards/{{card.image}}.jpg" class="card-img-top" alt="...">
+        <div class="card-footer h-100">
+          <small class="text-muted">Poder: {{ card.power }}</small> <br>
+          <small class="text-muted">Descripcion: {{ card.description }}</small>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <app-create-card [title]="modalTitle" [displayStyle]="displayStyle" [image]="imageUrlComplete" [info]="info" (modalStatus)="closePopup($event)"></app-create-card>
-</div>  
+  <app-create-card [title]="modalTitle" [displayStyle]="displayStyle" [image]="imageUrlComplete" [info]="info"
+    (modalStatus)="closePopup($event)"></app-create-card>
+</div>
