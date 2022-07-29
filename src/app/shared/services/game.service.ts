@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Subject } from 'rxjs';
+import { Router } from '@angular/router';
+import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Game } from '../models/game';
-import { Player } from '../models/player';
 import { GameSocket } from './socket.service';
 
 export interface Message {
@@ -17,25 +17,31 @@ export interface Message {
 
 export class GameService {
   #url!: string;
+  #gameSubject: BehaviorSubject<Game> = new BehaviorSubject<Game>({} as Game);
+  public readonly game: Observable<Game> = this.#gameSubject.asObservable();
   public messages!: Subject<any>;
-  private socket_url: string;
+  #socket_url!: string;
 
-  constructor(private http: HttpClient, private socket: GameSocket) {
+  constructor(private http: HttpClient, private router: Router,private socket: GameSocket) {
     this.#url = environment.gameUrls.game;
-    this.socket_url = environment.gameUrls.websocket;
+    this.#socket_url = environment.gameUrls.websocket;
   }
 
-  createGame(gameId: string, players: Player[], currentPlayersNumber: number): any {
-    return this.http.post<Game>(this.#url, {gameId, players, currentPlayersNumber});
+  createGame(gameToCreate: any): any {
+    return this.http.post<Game>(this.#url, gameToCreate);
   }
 
   startGame(gameId: string): any {
     return this.http.put<Game>(`${this.#url}start/${gameId}`, {});
   }
 
+  public setGameSubject(game: Game) {
+    this.#gameSubject.next(game);
+  }
+
   initSocket(gameId : string): void {
     this.messages = <Subject<Message>>(
-      this.socket.connect(this.socket_url + gameId).pipe(map((response: MessageEvent): any => {
+      this.socket.connect(this.#socket_url + gameId).pipe(map((response: MessageEvent): any => {
         console.log(JSON.parse(response.data));
         return JSON.parse(response.data);
       }))
