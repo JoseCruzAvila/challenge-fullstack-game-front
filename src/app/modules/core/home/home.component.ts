@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   displayStyle: string = "none";
   #player!: Player;
   game!: Game;
+  isHost: boolean = true;
 
   createGameForm: FormGroup;
   constructor(private router: Router, private formGroup: FormBuilder, private playerService: PlayerService,
@@ -104,6 +105,7 @@ export class HomeComponent implements OnInit {
       next: (value) => {
         if (value.type == "game.PlayerAdded") {
           if (this.game.players.filter(player => player.email == value.source.email).length == 0) {
+            this.isHost = this.isHost && value.source.email != this.#player.email;
             this.game.players.push(value.source);
             this.gameService.setGameSubject(this.game);
           }
