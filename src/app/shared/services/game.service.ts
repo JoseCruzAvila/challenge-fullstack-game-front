@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Game } from '../models/game';
+import { Player } from '../models/player';
 
 export interface Message {
   user: string;
@@ -29,6 +30,10 @@ export class GameService {
 
   startGame(gameId: string): any {
     return this.http.put<Game>(`${this.#url}start/${gameId}`, {});
+  }
+
+  joinToGame(gameId: string, player: Player): any {
+    return this.http.put<Game>(`${this.#url}join/${gameId}`, player);
   }
 
   public setGameSubject(game: Game) {

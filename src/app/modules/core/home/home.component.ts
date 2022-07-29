@@ -69,6 +69,13 @@ export class HomeComponent implements OnInit {
   }
 
   joinGame(){
+    this.gameService.joinToGame(this.game.gameId, this.#player).subscribe({
+      next: (value: any) => {
+        this.gameService.setGameSubject(value);
+        this.game = value;
+      },
+      error: console.error
+    });
     this.router.navigate(['game/fight']);
   }
 
