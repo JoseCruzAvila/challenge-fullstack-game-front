@@ -104,7 +104,6 @@ export class HomeComponent implements OnInit {
     this.gameService.initSocket(gameId);
     this.gameService.messages.subscribe({
       next: (value) => {
-        console.log(value);
         if (value.type == "game.PlayerAdded") {
           if (this.game.players.filter(player => player.email == value.source.email).length == 0) {
             this.isHost = this.isHost && value.source.email != this.#player.email;

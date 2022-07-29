@@ -9,7 +9,7 @@ export const environment = {
   },
   production: true,
   gameUrls: {
-    websocket: "ws://localhost:8888/retrieve/",
+    websocket: "wss://challenge-game-socket.herokuapp.com/retrieve/",
     game: "http://localhost:8080/game/",
     player: "https://challenge-players-service.herokuapp.com/player/",
     card: "https://challenge-cards-service.herokuapp.com/api/card/"
