@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Game } from '../models/game';
-import { Player } from '../models/player';
 
 export interface Message {
   user: string;
@@ -15,17 +16,23 @@ export interface Message {
 
 export class GameService {
   #url!: string;
+  #gameSubject: BehaviorSubject<Game> = new BehaviorSubject<Game>({} as Game);
+  public readonly game: Observable<Game> = this.#gameSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.#url = environment.gameUrls.game;
   }
 
-  createGame(gameId: string, players: Player[], currentPlayersNumber: number): any {
-    return this.http.post<Game>(this.#url, {gameId, players, currentPlayersNumber});
+  createGame(gameToCreate: any): any {
+    return this.http.post<Game>(this.#url, gameToCreate);
   }
 
   startGame(gameId: string): any {
     return this.http.put<Game>(`${this.#url}start/${gameId}`, {});
+  }
+
+  public setGameSubject(game: Game) {
+    this.#gameSubject.next(game);
   }
 }
 

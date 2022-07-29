@@ -23,13 +23,14 @@
 
             <div class="card form">
                 <div class="card-body">
-                    <h5 class="card-title text-center pd-20">Crear Juego</h5>
+                    <h5 *ngIf="game == null" class="card-title text-center pd-20">Crear Juego</h5>
+                    <h5 *ngIf="game != null" class="card-title text-center pd-20">{{ game.gameId }}</h5>
                     <div *ngIf="waitingUsers">
                         <div class="d-flex align-items-center">
                             <strong>Esperando Jugadores...</strong>
                             <div class="spinner-border ms-auto text-danger" role="status" aria-hidden="true"></div>
                         </div>
-                        <div class="card" style="height: 12vh; margin-top: 5%;">
+                        <div class="card" *ngFor="let player of game.players" style="height: 12vh; margin-top: 5%;">
                             <div class="row g-0">
                                 <div class="col-md-4" style="height: 39%; text-align: center;">
                                     <img src="./../../../../assets/img/avatar.jpg" class="img-fluid rounded-start"
@@ -37,48 +38,42 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
-                                        <h5 class="card-title">Juanchu</h5>
-                                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                        <h5 class="card-title">{{ player.name }}</h5>
+                                        <p class="card-text">
+                                            <small class="text-muted">
+                                                Online
+                                            </small>
                                         </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <a *ngIf="waitingUsers" class="btn btn-primary mt-35" (click)="initGame()">Iniciar Juego</a>
+                    <a *ngIf="waitingUsers" class="btn btn-primary mt-35 ms-auto me-auto" (click)="startGame()">Iniciar Juego</a>
 
-                    <!--Form-->
                     <div *ngIf="!waitingUsers">
                         <form id="create-game-card" [formGroup]="createGameForm" (ngSubmit)="createGame()">
                             <div class="input-group pd-20">
                                 <div class="input-group-text input-icon">
-                                    <i class="fas fa-solid fa-gamepad"></i>
+                                    <em class="fas fa-solid fa-gamepad"></em>
                                 </div>
-                                <input type="text" class="form-control" id="id" placeholder="Id del juego" name="id" required formControlName="gameId">
+                                <input type="text" class="form-control" id="id" placeholder="Id del juego" name="id"
+                                    required formControlName="gameId">
                             </div>
-                            <!--<div class="mb-3">
-                                <label for="power" class="form-label">Ingresa el Id del juego</label>
-                                <input type="text" class="form-control" id="id" placeholder="#32" name="id" required
-                                    formControlName="gameId">
-                            </div>
-                        
-                             <div class="mb-3 pd-20" *ngIf="!joinSesion">
-                                <label for="power" class="form-label">Numero de jugadores</label>
-                                <input type="text" class="form-control" id="id" placeholder="2" name="id" required
-                                    formControlName="playerNumber">
-                            </div>
-                        -->
                             <div class="input-group pd-20" *ngIf="!joinSesion">
                                 <div class="input-group-text input-icon">
-                                    <i class="fas fa-solid fa-users"></i>
+                                    <em class="fas fa-solid fa-users"></em>
                                 </div>
-                                <input type="text" class="form-control" id="id" placeholder="N° Jugadores" name="id" required formControlName="playerNumber">
+                                <input type="number" class="form-control" id="id" placeholder="N° Jugadores" name="id"
+                                    required formControlName="playerNumber">
                             </div>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                                <button class="button drive dark" type="button" (click)="createGame()" *ngIf="!joinSesion">
+                                <button class="button drive dark" type="button" (click)="createGame()"
+                                    *ngIf="!joinSesion">
                                     Crear Juego
                                 </button>
-                                <button class="btn btn-primary btn-lg" type="button" (click)="joinGame()"  *ngIf="joinSesion">
+                                <button class="btn btn-primary btn-lg" type="button" (click)="joinGame()"
+                                    *ngIf="joinSesion">
                                     Unirse al Juego
                                 </button>
                             </div>
