@@ -7,5 +7,11 @@ export const environment = {
     messagingSenderId: "62784328799",
     appId: "1:62784328799:web:bc2012ff248ab001bbb7ea"
   },
-  production: true
+  production: true,
+  gameUrls: {
+    websocket: "ws://localhost:8888/retrieve/",
+    game: "http://localhost:8080/game/",
+    player: "https://challenge-players-service.herokuapp.com/player/",
+    card: "https://challenge-cards-service.herokuapp.com/api/card/"
+  }
 };

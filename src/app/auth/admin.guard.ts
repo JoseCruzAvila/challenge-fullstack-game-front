@@ -17,11 +17,11 @@ export class AdminGuard implements CanActivate {
         next: (value) => {
           if (!value.isAdmin) this.router.navigate(["game/home"]);
         },
-        error: (error) => {
+        error: (_error) => {
           this.router.navigate(["login"]);
         }
       });
-      
+
       return true;
   }
   

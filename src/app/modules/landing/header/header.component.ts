@@ -2,13 +2,12 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
-import { CookieService } from "ngx-cookie-service";
 import { User } from 'src/app/shared/models/user';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.sass']
 })
 export class HeaderComponent implements OnInit {
 
@@ -17,13 +16,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthenticationService,
-    private formGroup: FormBuilder,
   ) {
-    /*this.profileForm = this.formGroup.group({
-      email: new FormControl("", [Validators.required]),
-      //descripcion: new FormControl("", [Validators.required]),
-    });
-    this.profileForm.get("email")?.setValue(this.#user.email);*/
+    
   }
 
   ngOnInit(): void {
@@ -42,16 +36,20 @@ export class HeaderComponent implements OnInit {
     this.authService.signOut();
   }
 
-  updateUser(): void {
-
-  }
-
   userName() {
     return this.#user.name;
   }
 
   userEmail() {
     return this.#user.email;
+  }
+
+  userImage() {
+    return this.#user.profileImage;
+  }
+
+  hasImage() {
+    return this.#user.profileImage != null ? true : false;
   }
 
   isAdmin() {

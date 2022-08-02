@@ -6,25 +6,24 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class LandingGuard implements CanActivate {
 
-  constructor(private authService: AngularFireAuth, private router: Router) { }
+  constructor(private authService: AngularFireAuth, private router : Router){}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+      return this.authService.currentUser.then((response) => {
+        if (response?.email == null || response.email == undefined) {
+          return true;
+        }
 
-    return this.authService.currentUser.then((response) => {
-      if (response?.email == null || response.email == undefined) {
+        this.router.navigate(["game/home"]);
         return false;
-      }
-
-      return true;
-    })
-    .catch((_error) => {
-      this.router.navigate(["login"]);
-      return false;
-    });
-  }
-
+      })
+      .catch((_error) => {
+        return true;
+      });
+    }
+  
 }

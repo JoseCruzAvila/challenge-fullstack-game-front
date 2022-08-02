@@ -1,8 +1,32 @@
-.container
-    //border:1px solid black
-    width: 100vw
-    height:100%
-    padding-top:10vh
+.content
+    width: 100%
+    height: 100%
+    z-index: -1
+    top: 0
+    background-image: url(/assets/img/game-background.jpg)
+    //background-color: #2f3545
+    background-size: cover
+    //background-repeat: no-repeat
+
+.title
+    color: white
+    -webkit-text-stroke: 1px black
+    font-size: 60px
+    font-weight: 600
+
+.title-separator
+    width: 60%
+    height: 8px
+    border: 2px solid #22b9f2
+    border-radius: 5px
+    background-color: #2f3545
+
+.card
+    background-color: #2f3545
+    border: 2px solid #22b9f2
+
+.card-text
+    color: #22b9f2
 
 .marvel-card:hover
     transform: scale(1.05)
@@ -17,5 +41,99 @@
 
 .btn
     margin-right:20px
+        
+.button     
+    &.dark 
+        --background: #2F3545
+        --shadow: 0 2px 8px -1px #{rgba(#151924, .32)}
+        --shadow-hover: 0 4px 20px -2px #{rgba(#151924, .5)}
+
+.button 
+    --background: #275efe
+    --text: #fff
+    --font-size: 19px
+    --duration: .5s
+    --move-hover: -4px
+    --shadow: 0 2px 8px -1px #{rgba(#275efe, .32)}
+    --shadow-hover: 0 4px 20px -2px #{rgba(#275efe, .5)}
+    padding: 16px 32px
+    font-weight: 600
+    line-height: var(--font-size)
+    border-radius: 24px
+    display: block
+    outline: none
+    border: 2px solid #22b9f2
+    cursor: pointer
+    text-decoration: none
+    font-size: var(--font-size)
+    letter-spacing: .5px
+    background: var(--background)
+    color: var(--text)
+    box-shadow: var(--shadow)
+    transform: translateY(var(--y))
+    transition: transform var(--duration) ease, box-shadow var(--duration) ease
+    -webkit-tap-highlight-color: transparent
+    -webkit-appearance: none
+    div 
+        display: flex
+        span 
+            display: block
+            backface-visibility: hidden
+            font-style: normal
+            $i: 1
+            @while $i < 12 
+                &:nth-child(#{$i}) 
+                    --d: #{$i / 20 + s}
+                $i: $i + 1
+            
+    &:hover 
+        --y: var(--move-hover)
+        --shadow: var(--shadow-hover)
+        --move: -4px
+        --shadow-active: 0 3px 1px rgba(0, 0, 0, .2)
+        span 
+            animation: move var(--duration) linear var(--d)
+    &.drive 
+        --move: 16px
+        --skew: 25deg
+        --skew-fast: 40deg
+        --skew-bounce: -12px
+        &:hover 
+            span 
+                --duration: 1s
+                transform-origin: 50% 100%
+                animation: drive var(--duration) linear var(--d)
+
+#home-columns
+    width: 100%
+    padding: 20px
+               
+@keyframes move 
+    40% 
+        transform: translateY(var(--move))
+        text-shadow: var(--shadow-active)
+    
+@keyframes drive 
+    40% 
+        opacity: 1
+    
+    55% 
+        transform: skewX(var(--skew)) translateX(var(--move))
+    
+    56% 
+        transform: skewX(var(--skew-fast)) translateX(calc(var(--move) * -1))
+    
+    55%,
+    56% 
+        opacity: 0
+    
+    75% 
+        transform: skewX(var(--skew))
+    
+    85% 
+        transform: skewX(var(--skew-bounce))
+    
+
+
         
     
